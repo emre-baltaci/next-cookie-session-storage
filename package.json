@@ -1,7 +1,7 @@
 {
   "name": "next-cookie-session-storage",
   "version": "0.1.1",
-  "description": "A cookie session storage API for Next.JS similar to Remix createCookieSessionStorage",
+  "description": "Create and manage session cookies for Next.JS with encoding and signing support",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
