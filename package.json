@@ -1,7 +1,7 @@
 {
   "name": "next-cookie-session-storage",
   "version": "0.1.2",
-  "description": "Create and manage session cookies for Next.JS with encoding and signing support",
+  "description": "Create and manage session cookies in Next.JS with encoding and signing support",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
