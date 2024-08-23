@@ -1,7 +1,7 @@
 {
   "name": "next-cookie-session-storage",
-  "version": "1.0.0",
-  "description": "A cookie session storage API similar to Remix createCookieSessionStorage",
+  "version": "0.1.1",
+  "description": "A cookie session storage API for Next.JS similar to Remix createCookieSessionStorage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -41,5 +41,8 @@
     "dist",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "directories": {
+    "test": "tests"
+  }
 }
