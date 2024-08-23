@@ -1,0 +1,45 @@
+{
+  "name": "next-cookie-session-storage",
+  "version": "1.0.0",
+  "description": "A cookie session storage API similar to Remix createCookieSessionStorage",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emre-baltaci/next-cookie-session-storage.git"
+  },
+  "keywords": [
+    "cookie",
+    "session",
+    "storage",
+    "next",
+    "next.js"
+  ],
+  "author": "Emre BALTACI <emrebaltaciatwork@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emre-baltaci/next-cookie-session-storage/issues"
+  },
+  "homepage": "https://github.com/emre-baltaci/next-cookie-session-storage#readme",
+  "devDependencies": {
+    "@types/cookie": "^0.6.0",
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^22.1.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "cookie": "^0.6.0",
+    "crypto-js": "^4.2.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
