@@ -1,4 +1,4 @@
-import { ConfiguredEncodingOptions } from '../types/createCookieSessionStorage';
+import { type ConfiguredEncodingOptions } from '../types/createCookieSessionStorage';
 
 export function isEncodingEnabled(options: ConfiguredEncodingOptions) {
   return Boolean(options);

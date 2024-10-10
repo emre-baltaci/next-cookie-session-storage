@@ -3,7 +3,7 @@ import { CookieSession } from './CookieSession';
 import { type CookieSessionStorageOptions } from './types/createCookieSessionStorage';
 import { getSessionCookieValue } from './lib/getSessionCookieValue';
 import { setSourceObject } from './lib/setSourceObject';
-import { CookieSource, SourceType } from './types/cookie-sources';
+import { type CookieSource, SourceType } from './types/cookie-sources';
 import { sign, unsign } from './lib/sign-unsign';
 import { initializeStorage } from './lib/initializeStorage';
 

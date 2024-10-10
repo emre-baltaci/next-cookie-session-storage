@@ -1,8 +1,8 @@
 import {
-  CookiesApiInterface,
-  CookieSource,
-  NextApiRequestInterface,
-  NextRequestInterface,
+  type CookiesApiInterface,
+  type CookieSource,
+  type NextApiRequestInterface,
+  type NextRequestInterface,
   SourceType,
 } from '../types/cookie-sources';
 

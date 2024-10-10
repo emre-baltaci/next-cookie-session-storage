@@ -1,7 +1,7 @@
 import { Encoder } from '../Encoder';
 import {
-  CookieSessionStorageCookieOptions,
-  CookieSessionStorageOptions,
+  type CookieSessionStorageCookieOptions,
+  type CookieSessionStorageOptions,
 } from '../types/createCookieSessionStorage';
 
 export function initializeStorage(options: CookieSessionStorageOptions) {

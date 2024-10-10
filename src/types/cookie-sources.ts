@@ -1,9 +1,8 @@
-import { CookieOptions } from './createCookieSessionStorage';
+import { type CookieOptions } from './createCookieSessionStorage';
 
 export type CookieObject = {
   name: string;
   value: string;
-  // options?: CookieOptions;
 } | null;
 
 //Middleware and API route request parameter

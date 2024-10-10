@@ -1,7 +1,7 @@
 import { decodeFromBase64, encodeToBase64 } from './lib/encode-decode';
 import {
-  EncoderFunction,
-  EncodingOptions,
+  type EncoderFunction,
+  type EncodingOptions,
 } from './types/createCookieSessionStorage';
 
 export class Encoder {
