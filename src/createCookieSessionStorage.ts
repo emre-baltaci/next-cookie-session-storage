@@ -26,14 +26,18 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     encoder,
   } = initializeStorage(options);
 
-  let cookieSource: CookieSource;
+  // Binding each cookie source to its related session
+  const sessionSources = new WeakMap<CookieSession<T>, CookieSource>();
 
   const getSession = async (source: unknown) => {
-    cookieSource = setSourceObject(source);
+    const cookieSource = setSourceObject(source);
 
     let sessionCookieValue = getSessionCookieValue(cookieSource, cookieName);
     if (!sessionCookieValue) {
-      return new CookieSession<T>({} as T);
+      const cookieSession = new CookieSession<T>({} as T);
+      sessionSources.set(cookieSession, cookieSource);
+
+      return cookieSession;
     }
 
     if (secrets && secrets.length > 0) {
@@ -53,8 +57,10 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     } catch (error) {
       sessionData = {} as T;
     }
+    const cookieSession = new CookieSession<T>(sessionData);
+    sessionSources.set(cookieSession, cookieSource);
 
-    return new CookieSession<T>(sessionData);
+    return cookieSession;
   };
 
   const commitSession = async (
@@ -91,6 +97,14 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     session: CookieSession<T>,
     cookieOverrides?: CookieOptions
   ) => {
+    const cookieSource = sessionSources.get(session);
+
+    if (!cookieSource) {
+      throw new Error(
+        'Invalid session. setCookie and deleteCookie methods require a session returned by getSession of the same storage. You might be calling them before getSession or with a session from another storage.'
+      );
+    }
+
     switch (cookieSource.type) {
       case SourceType.NEXT_REQUEST:
         console.log(
