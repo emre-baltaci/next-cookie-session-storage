@@ -49,7 +49,7 @@ export function createMockNextRequest(cookie: string): NextRequestInterface {
 export function createMockNextApiRequest(
   cookie: string
 ): NextApiRequestInterface {
-  const cookies = {};
+  const cookies: Record<string, string> = {};
 
   const parsedCookies = npmCookie.parse(cookie);
 
