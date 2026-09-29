@@ -21,8 +21,7 @@ export const signature =
 export const encodedCookie = `${cookieName}=${encodedData}`;
 export const signedEncodedCookie = `${cookieName}=s:${encodedData}.${signature}`;
 export const signedEncodedCookieWithoutPrefix = `${encodedCookie}.${signature}`;
-export const invalidSignedCookie =
-  '${cookieName}=s:${encodedData}.aa4b704ac83a714e453df73f50e85818ed029e08d0bd9756fde6e56ace0c20c1';
+export const invalidSignedCookie = `${cookieName}=s:${encodedData}.aa4b704ac83a714e453df73f50e85818ed029e08d0bd9756fde6e56ace0c20c1`;
 export const cookieWithoutSession = 'test=Test';
 
 export function createMockNextRequest(cookie: string): NextRequestInterface {
