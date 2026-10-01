@@ -81,8 +81,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
   };
 
   const destroySession = async (session: CookieSession<T>) => {
-    cookieOptions.maxAge = 0;
-    return commitSession(session);
+    return commitSession(session, { maxAge: 0 });
   };
 
   // setCookie and deleteCookie are required to set and delete cookies
@@ -128,8 +127,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
   };
 
   const deleteCookie = async (session: CookieSession<T>) => {
-    cookieOptions.maxAge = 0;
-    setCookie(session);
+    setCookie(session, { maxAge: 0 });
   };
 
   return {
