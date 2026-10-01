@@ -95,3 +95,34 @@ it('should set the user defined cookie options correctly', async () => {
   expect(commitedCookie).not.toContain('Secure');
   expect(commitedCookie).toContain('Path=/test');
 });
+
+it('should override cookie options correctly', async () => {
+  const defaultMaxAgeValue = 3600;
+  const overriddenMaxAgeValue = 60;
+  const expectedDefaultValue = `Max-Age=${defaultMaxAgeValue}`;
+  const expectedOverriddenValue = `Max-Age=${overriddenMaxAgeValue}`;
+
+  const { getSession, commitSession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+      httpOnly: false,
+      secure: false,
+      path: '/test',
+      maxAge: defaultMaxAgeValue,
+    },
+  });
+
+  const mockNextRequest = createMockNextRequest('');
+  const session = await getSession(mockNextRequest);
+  const commitedCookie = await commitSession(session, {
+    maxAge: overriddenMaxAgeValue,
+  });
+
+  expect(commitedCookie).not.toContain(expectedDefaultValue);
+  expect(commitedCookie).toContain(expectedOverriddenValue);
+  expect(commitedCookie).toContain('Path=/test');
+
+  const commitedCookieWithoutOverrides = await commitSession(session);
+
+  expect(commitedCookieWithoutOverrides).toContain(expectedDefaultValue);
+});
