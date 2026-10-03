@@ -19,6 +19,25 @@ const { getSession, setCookie } = createCookieSessionStorage({
   },
 });
 
+it('should throw error if called outside server actions', async () => {
+  // we mock the failing cookies API
+  const cookiesApi = {
+    get: () => null,
+    set: vi.fn(() => {
+      throw new Error(
+        'Cookies can only be modified in a Server Action and Route Handler'
+      );
+    }),
+  };
+
+  const session = await getSession(cookiesApi);
+  session.set('user', 'test');
+
+  await expect(setCookie(session)).rejects.toThrowError(
+    'setCookie failed to set the cookie'
+  );
+});
+
 it('should override cookie options correctly', async () => {
   const cookiesApi = createSpyCookiesApi();
 
