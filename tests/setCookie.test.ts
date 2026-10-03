@@ -85,3 +85,45 @@ it('should not leak overridden cookie options into later calls', async () => {
     })
   );
 });
+
+it('should write the cookie to its own request when requests overlap', async () => {
+  const cookiesApi1 = createSpyCookiesApi();
+  const cookiesApi2 = createSpyCookiesApi();
+
+  const session1 = await getSession(cookiesApi1);
+  const session2 = await getSession(cookiesApi2);
+
+  session1.set('user1', 'test1');
+  session2.set('user2', 'test2');
+
+  await setCookie(session1);
+
+  expect(cookiesApi1.set).toBeCalledTimes(1);
+  expect(cookiesApi2.set).toBeCalledTimes(0);
+
+  await setCookie(session2);
+
+  expect(cookiesApi1.set).toBeCalledTimes(1);
+  expect(cookiesApi2.set).toBeCalledTimes(1);
+});
+
+it('should throw an error when the session source is not accessible', async () => {
+  // we need a second createCookieSessionStorage call to pass an unrelated session to setCookie()
+  const { setCookie: setCookieToFail } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+      httpOnly: false,
+      secure: false,
+      path: '/test',
+      maxAge: defaultMaxAgeValue,
+    },
+  });
+
+  const cookiesApi = createSpyCookiesApi();
+  const session = await getSession(cookiesApi);
+
+  session.set('user', 'test');
+  await expect(setCookieToFail(session)).rejects.toThrowError(
+    'Invalid session'
+  );
+});
