@@ -1,3 +1,4 @@
+import { type CookieSession } from '../CookieSession';
 import { Encoder } from '../Encoder';
 import {
   type CookieSessionStorageCookieOptions,
@@ -15,7 +16,7 @@ export function initializeStorage(options: CookieSessionStorageOptions) {
     secure: true,
     path: '/',
     ...options.cookie,
-  } as CookieSessionStorageCookieOptions;
+  } satisfies CookieSessionStorageCookieOptions;
   const encoder = new Encoder(options.encoding);
 
   return {
