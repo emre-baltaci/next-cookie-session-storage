@@ -87,3 +87,22 @@ it('should not leak deleted cookie options to later calls', async () => {
     })
   );
 });
+
+it('should pass the errors onto the consumer correctly', async () => {
+  // we mock the failing cookies API
+  const cookiesApi = {
+    get: () => null,
+    set: vi.fn(() => {
+      throw new Error(
+        'Cookies can only be modified in a Server Action and Route Handler'
+      );
+    }),
+  };
+
+  const session = await getSession(cookiesApi);
+  session.set('user', 'test');
+
+  await expect(deleteCookie(session)).rejects.toThrowError(
+    'setCookie failed to set the cookie'
+  );
+});
