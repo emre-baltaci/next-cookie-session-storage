@@ -4,6 +4,9 @@
   "description": "Create and manage session cookies in Next.JS with encoding and signing support",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "tsc",
     "test": "vitest"
