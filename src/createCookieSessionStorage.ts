@@ -1,4 +1,4 @@
-import cookie from 'cookie';
+import { stringifySetCookie } from 'cookie';
 import { CookieSession } from './CookieSession';
 import {
   type CookieOptions,
@@ -80,7 +80,9 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       });
     }
 
-    return cookie.serialize(cookieName, cookieValue, {
+    return stringifySetCookie({
+      name: cookieName,
+      value: cookieValue,
       ...cookieOptions,
       ...cookieOverrides,
     });

@@ -22,7 +22,7 @@ it('should set a new cookie from the session', async () => {
 
 it('should set a new signed cookie from the session', async () => {
   const expectedSignedEncodedCookie =
-    'session=s%3AeyJ1c2VyIjoiVGVzdCJ9.2e3096f343dc85b479e8824f5a83953c4d416cdf862f1eada3129b3eef9a68d3'; // URL encoded
+    'session=s:eyJ1c2VyIjoiVGVzdCJ9.2e3096f343dc85b479e8824f5a83953c4d416cdf862f1eada3129b3eef9a68d3'; // URL encoded
 
   const { getSession, commitSession } = createCookieSessionStorage({
     cookie: {

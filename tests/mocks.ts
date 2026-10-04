@@ -4,7 +4,7 @@ import {
   NextApiRequestInterface,
   NextRequestInterface,
 } from '../src/types/cookie-sources';
-import npmCookie from 'cookie';
+import { parseCookie } from 'cookie';
 
 export const cookieName = 'session';
 export const secrets = ['another-secret', 'qwerty'];
@@ -51,10 +51,12 @@ export function createMockNextApiRequest(
 ): NextApiRequestInterface {
   const cookies: Record<string, string> = {};
 
-  const parsedCookies = npmCookie.parse(cookie);
+  const parsedCookies = parseCookie(cookie);
 
   for (const key in parsedCookies) {
-    cookies[key] = parsedCookies[key];
+    if (parsedCookies[key]) {
+      cookies[key] = parsedCookies[key];
+    }
   }
 
   return {
