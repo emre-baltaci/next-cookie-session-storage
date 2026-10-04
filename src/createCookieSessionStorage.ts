@@ -141,7 +141,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
   };
 
   const deleteCookie = async (session: CookieSession<T>) => {
-    setCookie(session, { maxAge: 0 });
+    return setCookie(session, { maxAge: 0 });
   };
 
   return {
