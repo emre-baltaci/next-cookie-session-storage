@@ -126,3 +126,22 @@ it('should override cookie options correctly', async () => {
 
   expect(commitedCookieWithoutOverrides).toContain(expectedDefaultValue);
 });
+
+it('should keep the default cookie option values if any of them passed as undefined', async () => {
+  const { getSession, commitSession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+      httpOnly: undefined,
+      secure: undefined,
+      path: undefined,
+    },
+  });
+
+  const mockNextRequest = createMockNextRequest('');
+  const session = await getSession(mockNextRequest);
+  const commitedCookie = await commitSession(session);
+
+  expect(commitedCookie).toContain('HttpOnly');
+  expect(commitedCookie).toContain('Secure');
+  expect(commitedCookie).toContain('Path=/');
+});
