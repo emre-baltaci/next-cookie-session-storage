@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "noEmit": true,
     "declaration": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "types": ["node"],
     "strict": true,
     "noUnusedLocals": true,
@@ -12,6 +13,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "tests"],
-  "exclude": ["node_modules"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }
