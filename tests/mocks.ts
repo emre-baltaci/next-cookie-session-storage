@@ -81,7 +81,7 @@ export function createMockCookiesApi(cookie: string): CookiesApiInterface {
         value,
       };
     },
-    set: (key: string, value: string) => {
+    set: () => {
       return;
     },
   };

@@ -6,12 +6,7 @@ import {
 } from './mocks';
 import { setSourceObject } from '../src/lib/setSourceObject';
 import { getSessionCookieValue } from '../src/lib/getSessionCookieValue';
-import {
-  encodeToBase64,
-  decodeFromBase64,
-  isEncodingEnabled,
-  decode,
-} from '../src/lib/encode-decode';
+import { isEncodingEnabled, decode } from '../src/lib/encode-decode';
 import { sign, unsign } from '../src/lib/sign-unsign';
 import { SourceType } from '../src/types/cookie-sources';
 import { ConfiguredEncodingOptions } from '../src/types/createCookieSessionStorage';

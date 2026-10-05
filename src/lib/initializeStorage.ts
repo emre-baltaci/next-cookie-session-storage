@@ -1,4 +1,3 @@
-import { type CookieSession } from '../CookieSession';
 import { Encoder } from '../Encoder';
 import {
   type CookieSessionStorageCookieOptions,
