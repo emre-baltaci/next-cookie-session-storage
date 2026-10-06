@@ -74,6 +74,7 @@ it('should set the cookie with default cookie options', async () => {
 
   expect(commitedCookie).toContain('HttpOnly');
   expect(commitedCookie).toContain('Path=/');
+  expect(commitedCookie).toContain('SameSite=Lax');
   expect(commitedCookie).toContain('Secure');
 });
 
@@ -83,6 +84,7 @@ it('should set the user defined cookie options correctly', async () => {
       name: 'session',
       httpOnly: false,
       secure: false,
+      sameSite: 'strict',
       path: '/test',
     },
   });
@@ -93,6 +95,7 @@ it('should set the user defined cookie options correctly', async () => {
 
   expect(commitedCookie).not.toContain('HttpOnly');
   expect(commitedCookie).not.toContain('Secure');
+  expect(commitedCookie).toContain('SameSite=Strict');
   expect(commitedCookie).toContain('Path=/test');
 });
 
@@ -133,6 +136,7 @@ it('should keep the default cookie option values if any of them passed as undefi
       name: 'session',
       httpOnly: undefined,
       secure: undefined,
+      sameSite: undefined,
       path: undefined,
     },
   });
@@ -143,5 +147,6 @@ it('should keep the default cookie option values if any of them passed as undefi
 
   expect(commitedCookie).toContain('HttpOnly');
   expect(commitedCookie).toContain('Secure');
+  expect(commitedCookie).toContain('SameSite=Lax');
   expect(commitedCookie).toContain('Path=/');
 });

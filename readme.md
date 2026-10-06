@@ -380,7 +380,7 @@ An object with the following methods:
 
 **`path`:** Specifies the value for the `Path` attribute in the `Set-Cookie` header. By default, `path` is set to `"/"`
 
-**`samSite`:** Can be `lax`, `strict` or `none`. `lax` will set the SameSite attribute to `Lax` , which provides lax same-site enforcement. `none` will set the SameSite attribute to `None`, indicating an explicit cross-site cookie. `strict` will set the `SameSite` attribute to `Strict`, enforcing strict same-site restrictions.
+**`sameSite`:** Can be `lax`, `strict` or `none`. `lax` will set the SameSite attribute to `Lax` , which provides lax same-site enforcement. `none` will set the SameSite attribute to `None`, indicating an explicit cross-site cookie. `strict` will set the `SameSite` attribute to `Strict`, enforcing strict same-site restrictions. By default, set to 'lax'.
 
 **`priority`:** Specifies the string to be the value for the `Priority` `Set-Cookie` attribute. `low` will set the Priority attribute to `Low`. `medium` will set the Priority attribute to `Medium`, which is the default when not specified. `high` will set the Priority attribute to `High`. This attribute is not yet fully standardized and may change in the future, meaning many clients might ignore it until it becomes more widely understood.
 

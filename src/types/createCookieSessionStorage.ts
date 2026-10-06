@@ -37,7 +37,7 @@ export type CookieOptions = {
   expires?: Date | undefined;
   maxAge?: number | undefined;
   path?: string | undefined;
-  samSite?: 'lax' | 'strict' | 'none' | undefined;
+  sameSite?: 'lax' | 'strict' | 'none' | undefined;
   partitioned?: boolean | undefined;
   priority?: 'low' | 'medium' | 'high' | undefined;
   secure?: boolean | undefined;
