@@ -229,4 +229,17 @@ describe('sign and unsign', () => {
 
     expect(unsignedData).toBe(undefined);
   });
+
+  it('should parse the signature correctly', () => {
+    const secret = 'qwerty';
+
+    const signedData = sign({
+      data: 'encoded.data.with.dots',
+      secret: secret,
+    });
+
+    const validatedData = unsign({ signedData, secrets: [secret] });
+
+    expect(validatedData).not.toBe(undefined);
+  });
 });

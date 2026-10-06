@@ -30,7 +30,9 @@ export function unsign({
   };
 }): string | undefined {
   const data = !options.omitSignPrefix ? removePrefix(signedData) : signedData;
-  const [value, signature] = data.split('.');
+  const lastDotIndex = data.lastIndexOf('.');
+  const value = data.slice(0, lastDotIndex);
+  const signature = data.slice(lastDotIndex + 1);
 
   if (!value || !signature) {
     return undefined;
