@@ -21,6 +21,7 @@ export function initializeStorage(options: CookieSessionStorageOptions) {
   } = {
     httpOnly: true,
     secure: true,
+    sameSite: 'lax',
     path: '/',
     ...safeUserCookieOptions,
   } satisfies CookieSessionStorageCookieOptions;
