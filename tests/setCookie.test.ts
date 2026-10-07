@@ -33,7 +33,7 @@ it('should throw error if called outside server actions', async () => {
   const session = await getSession(cookiesApi);
   session.set('user', 'test');
 
-  await expect(setCookie(session)).rejects.toThrowError(
+  await expect(setCookie(session)).rejects.toThrow(
     'setCookie failed to set the cookie'
   );
 });
@@ -45,7 +45,7 @@ it('should override cookie options correctly', async () => {
   session.set('user', 'test');
   await setCookie(session);
 
-  expect(cookiesApi.set).toBeCalledTimes(1);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(1);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -58,7 +58,7 @@ it('should override cookie options correctly', async () => {
   );
 
   await setCookie(session, { maxAge: overriddenMaxAgeValue });
-  expect(cookiesApi.set).toBeCalledTimes(2);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(2);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -78,7 +78,7 @@ it('should not leak overridden cookie options into later calls', async () => {
   session.set('user', 'test');
   await setCookie(session, { maxAge: overriddenMaxAgeValue });
 
-  expect(cookiesApi.set).toBeCalledTimes(1);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(1);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -92,7 +92,7 @@ it('should not leak overridden cookie options into later calls', async () => {
 
   await setCookie(session);
 
-  expect(cookiesApi.set).toBeCalledTimes(2);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(2);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -117,13 +117,13 @@ it('should write the cookie to its own request when requests overlap', async () 
 
   await setCookie(session1);
 
-  expect(cookiesApi1.set).toBeCalledTimes(1);
-  expect(cookiesApi2.set).toBeCalledTimes(0);
+  expect(cookiesApi1.set).toHaveBeenCalledTimes(1);
+  expect(cookiesApi2.set).toHaveBeenCalledTimes(0);
 
   await setCookie(session2);
 
-  expect(cookiesApi1.set).toBeCalledTimes(1);
-  expect(cookiesApi2.set).toBeCalledTimes(1);
+  expect(cookiesApi1.set).toHaveBeenCalledTimes(1);
+  expect(cookiesApi2.set).toHaveBeenCalledTimes(1);
 });
 
 it('should throw an error when the session source is not accessible', async () => {

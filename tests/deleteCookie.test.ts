@@ -25,7 +25,7 @@ it('should expire the cookie', async () => {
   session.set('user', 'test');
   await setCookie(session);
 
-  expect(cookiesApi.set).toBeCalledTimes(1);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(1);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -39,7 +39,7 @@ it('should expire the cookie', async () => {
 
   await deleteCookie(session);
 
-  expect(cookiesApi.set).toBeCalledTimes(2);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(2);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -58,7 +58,7 @@ it('should not leak deleted cookie options to later calls', async () => {
 
   await deleteCookie(session1);
 
-  expect(cookiesApi.set).toBeCalledTimes(1);
+  expect(cookiesApi.set).toHaveBeenCalledTimes(1);
   expect(cookiesApi.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -75,7 +75,7 @@ it('should not leak deleted cookie options to later calls', async () => {
   session2.set('user', 'test');
   await setCookie(session2);
 
-  expect(cookiesApi2.set).toBeCalledTimes(1);
+  expect(cookiesApi2.set).toHaveBeenCalledTimes(1);
   expect(cookiesApi2.set).toHaveBeenLastCalledWith(
     'session',
     expect.any(String),
@@ -102,7 +102,7 @@ it('should pass the errors onto the consumer correctly', async () => {
   const session = await getSession(cookiesApi);
   session.set('user', 'test');
 
-  await expect(deleteCookie(session)).rejects.toThrowError(
+  await expect(deleteCookie(session)).rejects.toThrow(
     'setCookie failed to set the cookie'
   );
 });
