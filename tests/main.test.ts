@@ -14,7 +14,7 @@ it('should throw an error if global window is defined', () => {
         name: 'session',
       },
     })
-  ).toThrowError('This library is intended for server-side use only.');
+  ).toThrow('This library is intended for server-side use only.');
 });
 
 it('should return the session methods', () => {

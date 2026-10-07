@@ -142,7 +142,5 @@ it('should throw an error when the session source is not accessible', async () =
   const session = await getSession(cookiesApi);
 
   session.set('user', 'test');
-  await expect(setCookieToFail(session)).rejects.toThrowError(
-    'Invalid session'
-  );
+  await expect(setCookieToFail(session)).rejects.toThrow('Invalid session');
 });

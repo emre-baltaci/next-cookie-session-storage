@@ -21,7 +21,7 @@ it('should throw an error if the encoder is not a function', () => {
     decoder: () => '',
   };
 
-  expect(() => new Encoder(options)).toThrowError(
+  expect(() => new Encoder(options)).toThrow(
     'encoding options: encoder must be a function'
   );
 });
@@ -32,7 +32,7 @@ it('should throw an error if the decoder is not a function', () => {
     decoder: 'not a function' as any,
   };
 
-  expect(() => new Encoder(options)).toThrowError(
+  expect(() => new Encoder(options)).toThrow(
     'encoding options: decoder must be a function'
   );
 });
@@ -44,7 +44,7 @@ it('should throw an error if the encoderParams is not an array', () => {
     encoderParams: 'not an array' as any,
   };
 
-  expect(() => new Encoder(options)).toThrowError(
+  expect(() => new Encoder(options)).toThrow(
     'encoding options: encoderParams must be an array'
   );
 });
@@ -56,7 +56,7 @@ it('should throw an error if the decoderParams is not an array', () => {
     decoderParams: 'not an array' as any,
   };
 
-  expect(() => new Encoder(options)).toThrowError(
+  expect(() => new Encoder(options)).toThrow(
     'encoding options: decoderParams must be an array'
   );
 });
