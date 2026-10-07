@@ -73,7 +73,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     }
 
     if (secrets && secrets.length > 0) {
-      cookieValue = sign({
+      cookieValue = await sign({
         data: cookieValue,
         secret: secrets[0],
         options: { omitSignPrefix },
@@ -122,7 +122,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
         }
 
         if (secrets && secrets.length > 0) {
-          cookieValue = sign({
+          cookieValue = await sign({
             data: cookieValue,
             secret: secrets[0],
             options: { omitSignPrefix },

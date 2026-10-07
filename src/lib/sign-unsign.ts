@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 import { timingSafeCompare } from './timingSafeCompare';
 
-export function sign({
+export async function sign({
   data,
   secret,
   options = { omitSignPrefix: false },
@@ -11,9 +11,14 @@ export function sign({
   options?: {
     omitSignPrefix: boolean;
   };
-}): string {
-  const hmac = CryptoJS.HmacSHA256(data, secret);
-  const signature = hmac.toString(CryptoJS.enc.Hex);
+}): Promise<string> {
+  const key = await getSignatureKey(secret);
+  const rawSignature = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(data)
+  );
+  const signature = convertArrayBufferToHex(rawSignature);
 
   return `${!options.omitSignPrefix ? 's:' : ''}${data}.${signature}`;
 }
@@ -60,4 +65,23 @@ function signatureIsValid(signature: string, expectedSignature: string) {
     Buffer.from(signature),
     Buffer.from(expectedSignature)
   );
+}
+
+async function getSignatureKey(secret: string) {
+  return await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign', 'verify']
+  );
+}
+
+function convertArrayBufferToHex(buffer: ArrayBuffer) {
+  const byteArray = new Uint8Array(buffer);
+  return Array.from(byteArray, (byte) => {
+    const hexValue = byte.toString(16);
+
+    return hexValue.padStart(2, '0');
+  }).join('');
 }
