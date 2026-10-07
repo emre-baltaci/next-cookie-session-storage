@@ -189,14 +189,14 @@ describe('sign and unsign', () => {
   const signature =
     'bd38e4ddb0f30bafded933829fe42494ccb1b1fa257c171e1e15cd33533bef53'; // value: test, secret: qwerty
 
-  it('should sign correctly with prefix', () => {
-    const signedData = sign({ data, secret });
+  it('should sign correctly with prefix', async () => {
+    const signedData = await sign({ data, secret });
 
     expect(signedData).toBe(`s:${data}.${signature}`);
   });
 
-  it('should sign correctly without prefix', () => {
-    const signedData = sign({
+  it('should sign correctly without prefix', async () => {
+    const signedData = await sign({
       data,
       secret,
       options: { omitSignPrefix: true },
@@ -205,15 +205,15 @@ describe('sign and unsign', () => {
     expect(signedData).toBe(`${data}.${signature}`);
   });
 
-  it('should unsign correctly with prefix', () => {
-    const signedData = sign({ data, secret });
+  it('should unsign correctly with prefix', async () => {
+    const signedData = await sign({ data, secret });
     const unsignedData = unsign({ signedData, secrets: [secret] });
 
     expect(unsignedData).toBe(data);
   });
 
-  it('should unsign correctly without prefix', () => {
-    const signedData = sign({
+  it('should unsign correctly without prefix', async () => {
+    const signedData = await sign({
       data,
       secret,
       options: { omitSignPrefix: true },
@@ -223,17 +223,17 @@ describe('sign and unsign', () => {
     expect(unsignedData).toBe(data);
   });
 
-  it('should return undefined if signature is invalid', () => {
-    const signedData = sign({ data, secret });
+  it('should return undefined if signature is invalid', async () => {
+    const signedData = await sign({ data, secret });
     const unsignedData = unsign({ signedData, secrets: ['invalid'] });
 
     expect(unsignedData).toBe(undefined);
   });
 
-  it('should parse the signature correctly', () => {
+  it('should parse the signature correctly', async () => {
     const secret = 'qwerty';
 
-    const signedData = sign({
+    const signedData = await sign({
       data: 'encoded.data.with.dots',
       secret: secret,
     });
