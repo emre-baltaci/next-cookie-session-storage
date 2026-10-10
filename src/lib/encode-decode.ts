@@ -30,9 +30,19 @@ export function decode(value: string, options: ConfiguredEncodingOptions) {
 
 // Default encoder / decoder functions
 export function encodeToBase64(value: string) {
-  return Buffer.from(value).toString('base64');
+  const bytes = new TextEncoder().encode(value);
+  const stringifiedBytes = Array.from(bytes, (byte) => {
+    return String.fromCharCode(byte);
+  }).join('');
+
+  return btoa(stringifiedBytes);
 }
 
 export function decodeFromBase64(value: string) {
-  return Buffer.from(value, 'base64').toString('utf-8');
+  const stringifiedBytes = atob(value);
+
+  const bytes = Uint8Array.from(stringifiedBytes, (stringifiedByte) =>
+    stringifiedByte.charCodeAt(0)
+  );
+  return new TextDecoder().decode(bytes);
 }
