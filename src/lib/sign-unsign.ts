@@ -1,6 +1,3 @@
-import CryptoJS from 'crypto-js';
-import { timingSafeCompare } from './timingSafeCompare';
-
 export async function sign({
   data,
   secret,
@@ -23,7 +20,7 @@ export async function sign({
   return `${!options.omitSignPrefix ? 's:' : ''}${data}.${signature}`;
 }
 
-export function unsign({
+export async function unsign({
   signedData,
   secrets,
   options = { omitSignPrefix: false },
@@ -33,21 +30,22 @@ export function unsign({
   options?: {
     omitSignPrefix: boolean;
   };
-}): string | undefined {
+}): Promise<string | undefined> {
   const data = !options.omitSignPrefix ? removePrefix(signedData) : signedData;
   const lastDotIndex = data.lastIndexOf('.');
   const value = data.slice(0, lastDotIndex);
   const signature = data.slice(lastDotIndex + 1);
+  const valueBuffer = new TextEncoder().encode(value);
+  const signatureBuffer = convertHexToBytes(signature);
 
-  if (!value || !signature) {
+  if (!value || !signature || !signatureBuffer) {
     return undefined;
   }
 
   for (const secret of secrets) {
-    const hmac = CryptoJS.HmacSHA256(value, secret);
-    const expectedSignature = hmac.toString(CryptoJS.enc.Hex);
+    const key = await getSignatureKey(secret);
 
-    if (signatureIsValid(signature, expectedSignature)) {
+    if (await crypto.subtle.verify('HMAC', key, signatureBuffer, valueBuffer)) {
       return value; // Signature valid
     }
   }
@@ -58,13 +56,6 @@ export function unsign({
 // Helpers
 function removePrefix(signedData: string) {
   return signedData.replace(/^s:/, '');
-}
-
-function signatureIsValid(signature: string, expectedSignature: string) {
-  return timingSafeCompare(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
 }
 
 async function getSignatureKey(secret: string) {
@@ -81,7 +72,20 @@ function convertArrayBufferToHex(buffer: ArrayBuffer) {
   const byteArray = new Uint8Array(buffer);
   return Array.from(byteArray, (byte) => {
     const hexValue = byte.toString(16);
-
     return hexValue.padStart(2, '0');
   }).join('');
+}
+
+function convertHexToBytes(value: string) {
+  if (!/^(?:[0-9a-f]{2})+$/i.test(value)) {
+    return undefined;
+  }
+
+  const hexArray = value.match(/../g);
+
+  if (!hexArray) {
+    return undefined;
+  }
+
+  return new Uint8Array(Array.from(hexArray, (hex) => parseInt(hex, 16)));
 }

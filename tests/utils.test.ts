@@ -207,7 +207,7 @@ describe('sign and unsign', () => {
 
   it('should unsign correctly with prefix', async () => {
     const signedData = await sign({ data, secret });
-    const unsignedData = unsign({ signedData, secrets: [secret] });
+    const unsignedData = await unsign({ signedData, secrets: [secret] });
 
     expect(unsignedData).toBe(data);
   });
@@ -218,14 +218,14 @@ describe('sign and unsign', () => {
       secret,
       options: { omitSignPrefix: true },
     });
-    const unsignedData = unsign({ signedData, secrets: [secret] });
+    const unsignedData = await unsign({ signedData, secrets: [secret] });
 
     expect(unsignedData).toBe(data);
   });
 
   it('should return undefined if signature is invalid', async () => {
     const signedData = await sign({ data, secret });
-    const unsignedData = unsign({ signedData, secrets: ['invalid'] });
+    const unsignedData = await unsign({ signedData, secrets: ['invalid'] });
 
     expect(unsignedData).toBe(undefined);
   });
@@ -238,7 +238,7 @@ describe('sign and unsign', () => {
       secret: secret,
     });
 
-    const validatedData = unsign({ signedData, secrets: [secret] });
+    const validatedData = await unsign({ signedData, secrets: [secret] });
 
     expect(validatedData).not.toBe(undefined);
   });

@@ -41,7 +41,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     }
 
     if (secrets && secrets.length > 0) {
-      sessionCookieValue = unsign({
+      sessionCookieValue = await unsign({
         secrets,
         signedData: sessionCookieValue,
         options: { omitSignPrefix },
