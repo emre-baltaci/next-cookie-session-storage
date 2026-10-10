@@ -33,6 +33,11 @@ export async function unsign({
 }): Promise<string | undefined> {
   const data = !options.omitSignPrefix ? removePrefix(signedData) : signedData;
   const lastDotIndex = data.lastIndexOf('.');
+
+  if (lastDotIndex === -1) {
+    return undefined;
+  }
+
   const value = data.slice(0, lastDotIndex);
   const signature = data.slice(lastDotIndex + 1);
   const valueBuffer = new TextEncoder().encode(value);
