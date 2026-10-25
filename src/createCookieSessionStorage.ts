@@ -48,12 +48,20 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       });
     }
 
+    if (sessionCookieValue === undefined) {
+      const cookieSession = new CookieSession<T>({} as T);
+      sessionSources.set(cookieSession, cookieSource);
+
+      return cookieSession;
+    }
+
     let sessionData: T;
+
     try {
       if (encoder.isEnabled) {
-        sessionCookieValue = encoder.decode(sessionCookieValue as string);
+        sessionCookieValue = encoder.decode(sessionCookieValue);
       }
-      sessionData = JSON.parse(sessionCookieValue as string);
+      sessionData = JSON.parse(sessionCookieValue);
     } catch (error) {
       sessionData = {} as T;
     }
