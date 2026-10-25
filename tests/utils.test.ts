@@ -11,6 +11,7 @@ import { sign, unsign } from '../src/lib/sign-unsign';
 import { SourceType } from '../src/types/cookie-sources';
 import { ConfiguredEncodingOptions } from '../src/types/createCookieSessionStorage';
 import { encode } from '../src/lib/encode-decode';
+import { hasValidSecret } from '../src/lib/hasValidSecret';
 
 describe('setSourceObject', () => {
   it('should set a NextRequestSource object from NextRequest', () => {
@@ -241,5 +242,15 @@ describe('sign and unsign', () => {
     const validatedData = await unsign({ signedData, secrets: [secret] });
 
     expect(validatedData).not.toBe(undefined);
+  });
+});
+
+describe('hasValidSecrets', () => {
+  it('should detect if there is any empty strings among the secrets', () => {
+    const validSecrets = ['test', 'test2'];
+    const inValidSecrets = ['test', ''];
+
+    expect(hasValidSecret(validSecrets)).toEqual(true);
+    expect(hasValidSecret(inValidSecrets)).toEqual(false);
   });
 });

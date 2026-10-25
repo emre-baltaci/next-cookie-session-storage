@@ -36,3 +36,23 @@ it('should return the session methods', () => {
   expect(session).toHaveProperty('setCookie');
   expect(typeof session.setCookie).toBe('function');
 });
+
+it('throws error if the secrets array contains any empty string', () => {
+  expect(() =>
+    createCookieSessionStorage({
+      cookie: {
+        name: 'session',
+        secrets: ['test', 'test2'],
+      },
+    })
+  ).not.toThrow();
+
+  expect(() =>
+    createCookieSessionStorage({
+      cookie: {
+        name: 'session',
+        secrets: ['test', ''],
+      },
+    })
+  ).toThrow('Secrets array can not contain any empty strings');
+});

@@ -3,15 +3,24 @@ import {
   type CookieSessionStorageCookieOptions,
   type CookieSessionStorageOptions,
 } from '../types/createCookieSessionStorage';
+import { hasValidSecret } from './hasValidSecret';
 
 export function initializeStorage(options: CookieSessionStorageOptions) {
   const userCookieOptionsEntries = Object.entries(options.cookie);
   const safeUserCookieOptionsEntries = userCookieOptionsEntries.filter(
     (option) => option[1] !== undefined
   );
+
   const safeUserCookieOptions = Object.fromEntries(
     safeUserCookieOptionsEntries
   ) as CookieSessionStorageCookieOptions;
+
+  if (
+    safeUserCookieOptions.secrets &&
+    !hasValidSecret(safeUserCookieOptions.secrets)
+  ) {
+    throw new Error('Secrets array can not contain any empty strings');
+  }
 
   const {
     name: cookieName,
