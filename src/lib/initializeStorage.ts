@@ -42,5 +42,6 @@ export function initializeStorage(options: CookieSessionStorageOptions) {
     omitSignPrefix,
     cookieOptions,
     encoder,
+    debug: options.debug ? true : false,
   };
 }

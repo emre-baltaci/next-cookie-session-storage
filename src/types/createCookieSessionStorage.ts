@@ -1,6 +1,7 @@
 export type CookieSessionStorageOptions = {
   cookie: CookieSessionStorageCookieOptions;
   encoding?: EncodingOptions;
+  debug?: boolean;
 };
 
 export type EncodingOptions =
