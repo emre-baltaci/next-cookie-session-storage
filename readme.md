@@ -15,6 +15,7 @@
   - [Destroying session](#destroying-session)
   - [Signing](#signing)
   - [Encoding](#encoding-usage)
+  - [Debugging](#debugging-usage)
 - [API reference](#api-reference)
   - [createCookieSessionStorage](#ccss-reference)
   - [Session instance](#session-instance-reference)
@@ -312,6 +313,21 @@ const storage = createCookieSessionStorage({
 });
 ```
 
+<a id="debugging-usage"></a>
+
+### Debugging
+
+If the session cookie contains a broken data, `getSession` returns an empty session without any error. To see the reason, set the `debug` option to `true`. For more information, see [createCookieSessionStorage reference](#ccss-reference)
+
+```js
+import { createCookieSessionStorage } from 'next-cookie-session-storage';
+
+const storage = createCookieSessionStorage({
+  cookie: { name: 'en_session' },
+  debug: true, // Warnings enabled
+});
+```
+
 <a id="API-reference"></a>
 
 ## API reference
@@ -350,7 +366,7 @@ T extends Record<string, any>: Defines the structure of the session data.
 #### `options`
 
 **Type: Object**
-Consists of `cookie` and `encoding` properties.
+Consists of `cookie`, `encoding` and `debug` properties.
 
 #### Returns
 
@@ -421,6 +437,22 @@ or set as an object for custom encoding
 ```
 
 See [Custom encoding](#encoding-reference) for details
+
+---
+
+#### `options.debug`
+
+**Type: Boolean | undefined**
+
+**Default:** disabled
+
+```js
+options.debug = true; // Enables warnings
+```
+
+When enabled, a warning is printed to console if the session cookie can not be decoded or parsed. `getSession` still returns an empty session, the warning only shows the reason
+
+**Important!** The warning can contain a part of session data. Use it only for debugging and do not leave it enabled in production.
 
 ---
 
