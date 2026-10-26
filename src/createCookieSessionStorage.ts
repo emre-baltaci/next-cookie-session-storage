@@ -24,6 +24,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     omitSignPrefix = false,
     cookieOptions,
     encoder,
+    debug,
   } = initializeStorage(options);
 
   // Binding each cookie source to its related session
@@ -63,6 +64,10 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       }
       sessionData = JSON.parse(sessionCookieValue);
     } catch (error) {
+      if (debug) {
+        console.warn(`Decoding error:\n`, error);
+      }
+
       sessionData = {} as T;
     }
     const cookieSession = new CookieSession<T>(sessionData);
