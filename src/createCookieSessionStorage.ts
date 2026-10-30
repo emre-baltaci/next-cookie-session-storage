@@ -62,10 +62,19 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       if (encoder.isEnabled) {
         sessionCookieValue = encoder.decode(sessionCookieValue);
       }
+
       sessionData = JSON.parse(sessionCookieValue);
+
+      if (
+        !sessionData ||
+        typeof sessionData !== 'object' ||
+        Array.isArray(sessionData)
+      ) {
+        throw new Error('Session data must be an object');
+      }
     } catch (error) {
       if (debug) {
-        console.warn(`Decoding failed:\n`, error);
+        console.warn(`Parsing failed:\n`, error);
       }
 
       sessionData = {} as T;

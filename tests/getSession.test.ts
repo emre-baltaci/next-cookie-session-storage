@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { createCookieSessionStorage } from '../src/createCookieSessionStorage';
 import { CookieSession } from '../src/CookieSession';
 import {
@@ -111,4 +111,23 @@ it('should return an empty session if unsigning fails', async () => {
   const mockCookiesApi = createMockCookiesApi(invalidSignedCookie);
   const session3 = await getSession(mockCookiesApi);
   expect(session3.getData()).toEqual({});
+});
+
+it('should return a new session if a non-object value is received as session data when encoding is disabled', async () => {
+  const spyConsoleWarn = vi.spyOn(console, 'warn');
+
+  const { getSession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+    },
+    encoding: false,
+    debug: true,
+  });
+
+  const cookieWithInvalidData = 'session=null';
+  const mockNextRequest = createMockNextRequest(cookieWithInvalidData);
+  const session = await getSession(mockNextRequest);
+
+  expect(session.getData()).toStrictEqual({});
+  expect(spyConsoleWarn).toHaveBeenCalledTimes(1);
 });
