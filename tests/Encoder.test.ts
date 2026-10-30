@@ -88,3 +88,31 @@ it('should encode to Base64 by default if there are no options', () => {
   expect(encoder.encode('test')).toBe('dGVzdA==');
   expect(encoder.decode('dGVzdA==')).toBe('test');
 });
+
+it("should display the encoder / function's error as the cause", () => {
+  const errorMessage = 'Test Error';
+  const error = new Error(errorMessage);
+
+  const encoder = new Encoder({
+    encoder: (_value) => {
+      throw error;
+    },
+    decoder: (_value) => {
+      throw error;
+    },
+  });
+
+  expect(() => encoder.encode('test')).toThrow(
+    expect.objectContaining({
+      message: 'Error in encoding. Please check your encoder function.',
+      cause: error,
+    })
+  );
+
+  expect(() => encoder.decode('test')).toThrow(
+    expect.objectContaining({
+      message: 'Error in decoding. Please check your decoder function.',
+      cause: error,
+    })
+  );
+});

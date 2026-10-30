@@ -56,7 +56,10 @@ export class Encoder {
       }
       return this.encoder(value);
     } catch (error) {
-      throw new Error('Error in encoding. Please check your encoder function');
+      throw new Error(
+        `Error in encoding. Please check your encoder function.`,
+        { cause: error }
+      );
     }
   }
 
@@ -68,7 +71,10 @@ export class Encoder {
 
       return this.decoder(value);
     } catch (error) {
-      throw new Error('Error in decoding. Please check your decoder function');
+      throw new Error(
+        `Error in decoding. Please check your decoder function.`,
+        { cause: error }
+      );
     }
   }
 }
