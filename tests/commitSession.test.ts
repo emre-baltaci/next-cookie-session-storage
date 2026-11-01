@@ -150,3 +150,17 @@ it('should keep the default cookie option values if any of them passed as undefi
   expect(commitedCookie).toContain('SameSite=Lax');
   expect(commitedCookie).toContain('Path=/');
 });
+
+it('should omit cookie options passed as undefined and keep the default values', async () => {
+  const { getSession, commitSession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+    },
+  });
+
+  const mockNextRequest = createMockNextRequest('');
+  const session = await getSession(mockNextRequest);
+  const commitedCookie = await commitSession(session, { secure: undefined });
+
+  expect(commitedCookie).toContain('Secure');
+});
