@@ -9,6 +9,7 @@ import { setSourceObject } from './lib/setSourceObject';
 import { type CookieSource, SourceType } from './types/cookie-sources';
 import { sign, unsign } from './lib/sign-unsign';
 import { initializeStorage } from './lib/initializeStorage';
+import { filterUnsafeCookieOptions } from './lib/filterUnsafeCookieOptions';
 
 export function createCookieSessionStorage<T extends Record<string, any>>(
   options: CookieSessionStorageOptions
@@ -102,11 +103,15 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       });
     }
 
+    const safeCookieOverrides = cookieOverrides
+      ? filterUnsafeCookieOptions(cookieOverrides)
+      : undefined;
+
     return stringifySetCookie({
       name: cookieName,
       value: cookieValue,
       ...cookieOptions,
-      ...cookieOverrides,
+      ...safeCookieOverrides,
     });
   };
 
@@ -128,6 +133,10 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
         'Invalid session. setCookie and deleteCookie methods require a session returned by getSession of the same storage. You might be calling them before getSession or with a session from another storage.'
       );
     }
+
+    const safeCookieOverrides = cookieOverrides
+      ? filterUnsafeCookieOptions(cookieOverrides)
+      : undefined;
 
     switch (cookieSource.type) {
       case SourceType.NEXT_REQUEST:
@@ -153,7 +162,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
         try {
           cookiesApi.set(cookieName, cookieValue, {
             ...cookieOptions,
-            ...cookieOverrides,
+            ...safeCookieOverrides,
           });
         } catch (error) {
           throw new Error(`Error: setCookie failed to set the cookie.

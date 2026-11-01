@@ -144,3 +144,26 @@ it('should throw an error when the session source is not accessible', async () =
   session.set('user', 'test');
   await expect(setCookieToFail(session)).rejects.toThrow('Invalid session');
 });
+
+it('should omit cookie options passed as undefined and keep the default values', async () => {
+  const cookiesApi = createSpyCookiesApi();
+
+  const { getSession, setCookie } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+    },
+  });
+
+  const session = await getSession(cookiesApi);
+  session.set('user', 'test');
+  await setCookie(session, { secure: undefined });
+
+  expect(cookiesApi.set).toHaveBeenCalledTimes(1);
+  expect(cookiesApi.set).toHaveBeenLastCalledWith(
+    'session',
+    expect.any(String),
+    expect.objectContaining({
+      secure: true,
+    })
+  );
+});
