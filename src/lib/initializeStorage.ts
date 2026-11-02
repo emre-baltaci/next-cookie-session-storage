@@ -3,17 +3,11 @@ import {
   type CookieSessionStorageCookieOptions,
   type CookieSessionStorageOptions,
 } from '../types/createCookieSessionStorage';
+import { filterUnsafeValues } from './filterUnsafeValues';
 import { hasValidSecret } from './hasValidSecret';
 
 export function initializeStorage(options: CookieSessionStorageOptions) {
-  const userCookieOptionsEntries = Object.entries(options.cookie);
-  const safeUserCookieOptionsEntries = userCookieOptionsEntries.filter(
-    (option) => option[1] !== undefined
-  );
-
-  const safeUserCookieOptions = Object.fromEntries(
-    safeUserCookieOptionsEntries
-  ) as CookieSessionStorageCookieOptions;
+  const safeUserCookieOptions = filterUnsafeValues(options.cookie);
 
   if (
     safeUserCookieOptions.secrets &&
