@@ -9,7 +9,7 @@ import { setSourceObject } from './lib/setSourceObject';
 import { type CookieSource, SourceType } from './types/cookie-sources';
 import { sign, unsign } from './lib/sign-unsign';
 import { initializeStorage } from './lib/initializeStorage';
-import { filterUnsafeCookieOptions } from './lib/filterUnsafeCookieOptions';
+import { filterUnsafeValues } from './lib/filterUnsafeValues';
 
 export function createCookieSessionStorage<T extends Record<string, any>>(
   options: CookieSessionStorageOptions
@@ -104,7 +104,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     }
 
     const safeCookieOverrides = cookieOverrides
-      ? filterUnsafeCookieOptions(cookieOverrides)
+      ? filterUnsafeValues(cookieOverrides)
       : undefined;
 
     return stringifySetCookie({
@@ -135,7 +135,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
     }
 
     const safeCookieOverrides = cookieOverrides
-      ? filterUnsafeCookieOptions(cookieOverrides)
+      ? filterUnsafeValues(cookieOverrides)
       : undefined;
 
     switch (cookieSource.type) {
