@@ -8,7 +8,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Creating the storage](#usage-creating-storage)
-  - [With API route handlers](#usage-api-route-handler)
+  - [With API route handlers](#usage-api-route-handlers)
   - [With middlewares](#usage-middlewares)
   - [With server actions](#usage-server-actions)
   - [With getServerSideProps](#usage-getserversideprops)
@@ -82,19 +82,15 @@ export const storage = createCookieSessionStorage({
 ### With API route handlers
 
 ```js
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 
 export async function GET(request) {
-  const { getSession, commitSession } = createCookieSessionStorage({
-    cookie: { name: '<session cookie name>' },
-  });
-
-  const session = await getSession(request);
+  const session = await storage.getSession(request);
 
   session.set('id', 1111);
 
   const response = NextResponse.json({ message: 'success' }, { status: 200 });
-  response.headers.set('Set-Cookie', await commitSession(session));
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
   return response;
 }
 ```
@@ -105,19 +101,15 @@ export async function GET(request) {
 
 ```js
 import { NextResponse } from 'next/server';
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 
 export async function middleware(request) {
-  const { getSession, commitSession } = createCookieSessionStorage({
-    cookie: { name: '<session cookie name>' },
-  });
-
-  const session = await getSession(request);
+  const session = await storage.getSession(request);
 
   session.set('id', 1111);
 
   const response = NextResponse.next();
-  response.headers.set('Set-Cookie', await commitSession(session));
+  response.headers.set('Set-Cookie', await storage.commitSession(session));
 
   return response;
 }
@@ -129,19 +121,15 @@ export async function middleware(request) {
 
 ```js
 'use server';
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 import { cookies } from 'next/headers';
 
 export async function serverAction() {
-  const { getSession, setCookie } = createCookieSessionStorage({
-    cookie: { name: '<session cookie name>' },
-  });
-
-  const session = await getSession(cookies());
+  const session = await storage.getSession(await cookies());
 
   session.set('id', 1111);
 
-  setCookie(session);
+  await storage.setCookie(session);
 
   return; //...
 }
@@ -152,21 +140,14 @@ export async function serverAction() {
 ### With getServerSideProps
 
 ```js
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 
 export const getServerSideProps = async ({ req, res }) => {
-  const { getSession, commitSession, destroySession } =
-    createCookieSessionStorage({
-      cookie: {
-        name: '<session-cookie-name>',
-      },
-    });
-
-  const session = await getSession(req);
+  const session = await storage.getSession(req);
 
   session.set('id', 1111);
 
-  res.setHeader('Set-Cookie', await commitSession(session));
+  res.setHeader('Set-Cookie', await storage.commitSession(session));
   return {
     props: {},
   };
@@ -178,13 +159,9 @@ export const getServerSideProps = async ({ req, res }) => {
 ### Setting and manipulating session data
 
 ```js
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 
 export async function GET(request: NextRequest) {
-  const storage = createCookieSessionStorage({
-    cookie: { name: 'en_session' },
-  });
-
   const session = await storage.getSession(request);
 
   // setting a new data
@@ -212,17 +189,13 @@ export async function GET(request: NextRequest) {
 ### Destroying a session
 
 ```js
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 
 export async function GET(request) {
-  const { getSession, destroySession } = createCookieSessionStorage({
-    cookie: { name: '<session cookie name>' },
-  });
-
-  const session = await getSession(request);
+  const session = await storage.getSession(request);
 
   const response = NextResponse.json({ message: 'success' }, { status: 200 });
-  response.headers.set('Set-Cookie', await destroySession(session));
+  response.headers.set('Set-Cookie', await storage.destroySession(session));
   return response;
 }
 ```
@@ -230,17 +203,13 @@ export async function GET(request) {
 Destroying session with [`deleteCookie`](#deletecookie) method **(Cookies API only)**
 
 ```js
-import { createCookieSessionStorage } from 'next-cookie-session-storage';
+import { storage } from '@/lib/session';
 import { cookies } from 'next/headers';
 
 export async function serverAction() {
-  const storage = createCookieSessionStorage({
-    cookie: { name: '<session-cookie-name>' },
-  });
+  const session = await storage.getSession(await cookies());
 
-  const session = await storage.getSession(cookies());
-
-  storage.deleteCookie(session); // this will work as destroySession
+  await storage.deleteCookie(session); // this will work as destroySession
 
   return; //...;
 }
