@@ -15,6 +15,7 @@
   - [Setting and manipulating session data](#setting-session-data)
   - [Destroying session](#destroying-session)
   - [Cookie options per call](#cookie-options-per-call)
+  - [Session lifetime](#session-lifetime)
   - [Signing](#signing)
   - [Encoding](#encoding-usage)
   - [Debugging](#debugging-usage)
@@ -228,6 +229,25 @@ response.headers.set(
   await storage.commitSession(session, { maxAge: 60 }) // Expires after 60 seconds
 );
 ```
+
+<a id="session-lifetime"></a>
+
+### Session lifetime
+
+`maxAge` and `expires` are applied by the browser only. The server does not check them, so a copy of the cookie stays valid after that time. In the same way, `destroySession` and `deleteCookie` methods only remove the cookie from the browser, a copy of it can still be used.
+
+If you need a limit on the server, you can keep a timestamp in the session data and check it after `getSession`
+
+```js
+const session = await storage.getSession(request);
+
+// createdAt is a timestamp you set while creating the session
+if (Date.now() - session.get('createdAt') > 60 * 60 * 1000) {
+  // session is too old
+}
+```
+
+**Important!** This is safe only when `secrets` is set. Otherwise the client can change the timestamp
 
 <a id="signing"></a>
 
