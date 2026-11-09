@@ -7,6 +7,7 @@
 - [Notes](#notes)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Creating the storage](#usage-creating-storage)
   - [With API route handlers](#usage-api-route-handler)
   - [With middlewares](#usage-middlewares)
   - [With server actions](#usage-server-actions)
@@ -58,6 +59,23 @@ $ npm install next-cookie-session-storage
 <a id="usage"></a>
 
 ## Usage
+
+<a id="usage-creating-storage"></a>
+
+### Creating the storage
+
+Storage should be created once in a shared module and imported where it is needed. In this way the cookie options are written in one place and storage is not created again on every request.
+
+```js
+// lib/session.js
+import { createCookieSessionStorage } from 'next-cookie-session-storage';
+
+export const storage = createCookieSessionStorage({
+  cookie: { name: '<session cookie name>', secrets: ['qwerty'] },
+});
+```
+
+**Important!** This module must be imported only in server-side code. `createCookieSessionStorage` throws an error in browser
 
 <a id="usage-api-route-handlers"></a>
 
