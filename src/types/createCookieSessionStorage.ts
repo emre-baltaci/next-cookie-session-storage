@@ -14,15 +14,6 @@ export type EncodingOptions =
     }
   | undefined;
 
-export type ConfiguredEncodingOptions =
-  | boolean
-  | {
-      encoder: (value: string, ...args: any[]) => string;
-      encoderParams: any[];
-      decoder: (value: string, ...args: any[]) => string;
-      decoderParams: any[];
-    };
-
 export type EncoderFunctionWithParams = (
   value: string,
   ...args: any[]

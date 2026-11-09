@@ -6,11 +6,8 @@ import {
 } from './mocks';
 import { setSourceObject } from '../src/lib/setSourceObject';
 import { getSessionCookieValue } from '../src/lib/getSessionCookieValue';
-import { isEncodingEnabled, decode } from '../src/lib/encode-decode';
 import { sign, unsign } from '../src/lib/sign-unsign';
 import { SourceType } from '../src/types/cookie-sources';
-import { ConfiguredEncodingOptions } from '../src/types/createCookieSessionStorage';
-import { encode } from '../src/lib/encode-decode';
 import { hasValidSecret } from '../src/lib/hasValidSecret';
 
 describe('setSourceObject', () => {
@@ -60,127 +57,6 @@ describe('getSessionCookieValue', () => {
     const cookieValue = getSessionCookieValue(sourceObject, 'session');
 
     expect(cookieValue).toBe('test');
-  });
-});
-
-describe('isEncodingEnabled', () => {
-  it('should wroks correctly', () => {
-    const optionsWithCustomEncoding: ConfiguredEncodingOptions = {
-      encoder: (val: string) => {
-        return val;
-      },
-      encoderParams: [],
-      decoder: (val: string) => {
-        return val;
-      },
-      decoderParams: [],
-    };
-
-    expect(isEncodingEnabled(true)).toBe(true);
-    expect(isEncodingEnabled(false)).toBe(false);
-    expect(isEncodingEnabled(optionsWithCustomEncoding)).toBe(true);
-  });
-});
-
-describe('encode', () => {
-  it('should encode to Base64 when encoding is set to true', () => {
-    const expectedResult = Buffer.from('test').toString('base64');
-
-    expect(encode('test', true)).toBe(expectedResult);
-  });
-
-  it('should return the original value when encoding is set to false', () => {
-    expect(encode('test', false)).toBe('test');
-  });
-
-  it('should encode correctly with the encoder function (No params)', () => {
-    const expectedResult = 'tset';
-
-    function reverseString(value: string) {
-      return value.split('').reverse().join('');
-    }
-
-    const options = {
-      encoder: reverseString,
-      encoderParams: [],
-      decoder: reverseString,
-      decoderParams: [],
-    };
-
-    expect(encode('test', options)).toBe(expectedResult);
-  });
-
-  it('should encode correctly with the encoder function (With params)', () => {
-    const expectedResult = 'tsettesttest';
-
-    function encoder(value: string, suffix: string, count: number) {
-      let reversed = value.split('').reverse().join('');
-      for (let i = 0; i < count; i++) {
-        reversed += suffix;
-      }
-
-      return reversed;
-    }
-
-    const options: ConfiguredEncodingOptions = {
-      encoder,
-      encoderParams: ['test', 2],
-      decoder: (val) => val, // dummy decoder
-      decoderParams: [],
-    };
-
-    expect(encode('test', options)).toBe(expectedResult);
-  });
-});
-
-describe('decode', () => {
-  it('should decode from Base64 when encoding is set to true', () => {
-    const encodedString = Buffer.from('test').toString('base64');
-
-    expect(decode(encodedString, true)).toBe('test');
-  });
-
-  it('should return the original value when encoding is set to false', () => {
-    expect(decode('test', false)).toBe('test');
-  });
-
-  it('should decode correctly with the decoder function (No params)', () => {
-    const expectedResult = 'tset';
-
-    function reverseString(value: string) {
-      return value.split('').reverse().join('');
-    }
-
-    const options = {
-      encoder: reverseString,
-      encoderParams: [],
-      decoder: reverseString,
-      decoderParams: [],
-    };
-
-    expect(decode('test', options)).toBe(expectedResult);
-  });
-
-  it('should decode correctly with the decoder function (With params)', () => {
-    const expectedResult = 'tsettesttest';
-
-    function decoder(value: string, suffix: string, count: number) {
-      let reversed = value.split('').reverse().join('');
-      for (let i = 0; i < count; i++) {
-        reversed += suffix;
-      }
-
-      return reversed;
-    }
-
-    const options: ConfiguredEncodingOptions = {
-      encoder: (val) => val, // dummy encoder
-      encoderParams: [],
-      decoder,
-      decoderParams: ['test', 2],
-    };
-
-    expect(decode('test', options)).toBe(expectedResult);
   });
 });
 
