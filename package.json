@@ -40,8 +40,8 @@
   },
   "files": [
     "dist",
-    "README.md",
-    "LICENSE"
+    "readme.md",
+    "LICENCE"
   ],
   "directories": {
     "test": "tests"
