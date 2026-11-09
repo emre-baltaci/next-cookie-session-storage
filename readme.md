@@ -14,6 +14,7 @@
   - [With getServerSideProps](#usage-getserversideprops)
   - [Setting and manipulating session data](#setting-session-data)
   - [Destroying session](#destroying-session)
+  - [Cookie options per call](#cookie-options-per-call)
   - [Signing](#signing)
   - [Encoding](#encoding-usage)
   - [Debugging](#debugging-usage)
@@ -213,6 +214,19 @@ export async function serverAction() {
 
   return; //...;
 }
+```
+
+<a id="cookie-options-per-call"></a>
+
+### Cookie options per call
+
+`commitSession` and `setCookie` methods accept cookie options as second parameter. These options are merged with the cookie options of the storage and they are used only for that call. The options of the storage do not change. `name`, `secrets` and `omitSignPrefix` are not accepted per call
+
+```js
+response.headers.set(
+  'Set-Cookie',
+  await storage.commitSession(session, { maxAge: 60 }) // Expires after 60 seconds
+);
 ```
 
 <a id="signing"></a>
