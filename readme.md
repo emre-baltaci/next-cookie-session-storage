@@ -504,11 +504,12 @@ Promise<CookieSession<T>>: A promise that resolves to the session object.
 Serializes and signs the session data for setting in a cookie.
 
 ```typescript
-commitSession(session: CookieSession<T>): Promise<string>
+commitSession(session: CookieSession<T>, cookieOverrides?: CookieOptions): Promise<string>
 ```
 
 **Parameters**
 session: CookieSession<T>: The session object containing the data to commit.
+cookieOverrides?: CookieOptions: Cookie options for this call only. See [Cookie options per call](#cookie-options-per-call)
 
 **Returns**
 Promise<string>: A promise that resolves to the serialized cookie string.
@@ -517,7 +518,7 @@ Promise<string>: A promise that resolves to the serialized cookie string.
 
 ### `destroySession`
 
-Destroys the session by invalidating the cookie.
+Destroys the session by expiring the cookie in the browser.
 
 ```typescript
 destroySession(session: CookieSession<T>): Promise<string>
@@ -537,11 +538,12 @@ Sets the session cookie using the Cookies API.
 **Important!** Can only be used when the session is retrieved by Cookies API
 
 ```typescript
-setCookie(session: CookieSession<T>): Promise<void>
+setCookie(session: CookieSession<T>, cookieOverrides?: CookieOptions): Promise<void>
 ```
 
 **Parameters**
 session: CookieSession<T>: The session object to set as a cookie.
+cookieOverrides?: CookieOptions: Cookie options for this call only. See [Cookie options per call](#cookie-options-per-call)
 
 **Returns**
 Promise<void>: A promise that resolves once the cookie has been set.
