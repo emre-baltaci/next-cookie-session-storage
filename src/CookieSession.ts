@@ -2,15 +2,15 @@ export class CookieSession<T extends Record<string, any>> {
   constructor(private data: T) {}
 
   getData(): T {
-    return this.data;
+    return structuredClone(this.data);
   }
 
   set<K extends keyof T>(key: K, value: T[K]): void {
-    this.data[key] = value;
+    this.data[key] = structuredClone(value);
   }
 
   get<K extends keyof T>(key: K): T[K] | undefined {
-    return this.data[key];
+    return structuredClone(this.data[key]);
   }
 
   delete<K extends keyof T>(key: K): void {
