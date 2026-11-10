@@ -1,5 +1,7 @@
 import { it, expect, vi } from 'vitest';
 import { createCookieSessionStorage } from '../src/createCookieSessionStorage';
+import { CookiesApiInterface } from '../src/types/cookie-sources';
+import { createMockCookiesApi } from './mocks';
 
 function createSpyCookiesApi() {
   return { get: () => null, set: vi.fn() };
@@ -50,6 +52,31 @@ it('should expire the cookie', async () => {
       secure: false,
     })
   );
+});
+
+it('should reset the session data when cookie is deleted', async () => {
+  const cookiesApi = createSpyCookiesApi();
+  let session = await getSession(cookiesApi);
+
+  session.set('user', 'test');
+  await setCookie(session);
+
+  expect(session.getData()).toStrictEqual({ user: 'test' });
+
+  await deleteCookie(session);
+
+  expect(session.getData()).toStrictEqual({});
+
+  // we also check the cookies value by retrieving it back
+  const lastCallParameters = cookiesApi.set.mock.lastCall as Parameters<
+    CookiesApiInterface['set']
+  >;
+  const deletedCookieValue = lastCallParameters[1];
+
+  const cookiesApiMock = createMockCookiesApi(`session=${deletedCookieValue};`);
+  session = await getSession(cookiesApiMock);
+
+  expect(session.getData()).toStrictEqual({});
 });
 
 it('should not leak deleted cookie options to later calls', async () => {

@@ -19,6 +19,31 @@ it('should expire the session cookie', async () => {
   expect(cookie).toContain(expectedCookieOption);
 });
 
+it('should reset the session data when cookie is destroyed', async () => {
+  const { getSession, destroySession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+    },
+  });
+
+  let mockNextRequest = createMockNextRequest('');
+  const session = await getSession(mockNextRequest);
+
+  session.set('user', 'Test');
+
+  expect(session.getData()).toStrictEqual({ user: 'Test' });
+
+  const deletedCookie = await destroySession(session);
+
+  expect(session.getData()).toStrictEqual({});
+
+  // we also check the cookies value by retrieving it back
+  mockNextRequest = createMockNextRequest(deletedCookie);
+  const deletedSession = await getSession(mockNextRequest);
+
+  expect(deletedSession.getData()).toStrictEqual({});
+});
+
 it("should not override other session's cookie settings", async () => {
   const expectedDestroyedCookieOption = 'Max-Age=0';
 
