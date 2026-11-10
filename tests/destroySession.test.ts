@@ -3,7 +3,6 @@ import { createCookieSessionStorage } from '../src/createCookieSessionStorage';
 import { createMockNextRequest } from './mocks';
 
 it('should expire the session cookie', async () => {
-  const expectedCookieOption = 'Max-Age=0';
   const { getSession, destroySession } = createCookieSessionStorage({
     cookie: {
       name: 'session',
@@ -16,7 +15,8 @@ it('should expire the session cookie', async () => {
   session.set('user', 'Test');
   const cookie = await destroySession(session);
 
-  expect(cookie).toContain(expectedCookieOption);
+  expect(cookie).toContain('Max-Age=0');
+  expect(cookie).toContain(`Expires=${new Date(0).toUTCString()}`);
 });
 
 it('should reset the session data when cookie is destroyed', async () => {
