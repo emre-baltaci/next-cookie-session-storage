@@ -48,6 +48,7 @@ it('should expire the cookie', async () => {
     expect.objectContaining({
       httpOnly: false,
       maxAge: 0,
+      expires: new Date(0),
       path: '/test',
       secure: false,
     })
