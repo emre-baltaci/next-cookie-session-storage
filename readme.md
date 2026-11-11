@@ -530,14 +530,14 @@ destroySession(session: CookieSession<T>): Promise<string>
 session: CookieSession<T>: The session object to destroy.
 
 **Returns**
-Promise<string>: A promise that resolves to the serialized cookie string with maxAge set to 0.
+Promise<string>: A promise that resolves to the serialized cookie string with maxAge set to 0 and expires set to a past date. The session data is cleared.
 
 <a id="setcookie-reference"></a>
 
 ### `setCookie`
 
 Sets the session cookie using the Cookies API.
-**Important!** Can only be used when the session is retrieved by Cookies API
+**Important!** Can only be used when the session is retrieved by Cookies API, otherwise an error is thrown
 
 ```typescript
 setCookie(session: CookieSession<T>, cookieOverrides?: CookieOptions): Promise<void>
@@ -555,7 +555,7 @@ Promise<void>: A promise that resolves once the cookie has been set.
 ### `deleteCookie`
 
 Deletes the session cookie using Cookies API.
-**Important!** Can only be used when the session is retrieved by Cookies API
+**Important!** Can only be used when the session is retrieved by Cookies API, otherwise an error is thrown
 
 ```typescript
 deleteCookie(session: CookieSession<T>): Promise<void>
