@@ -1,5 +1,6 @@
 import { it, expect, vi } from 'vitest';
 import { createCookieSessionStorage } from '../src/createCookieSessionStorage';
+import { createMockNextApiRequest } from './mocks';
 
 function createSpyCookiesApi() {
   return { get: () => null, set: vi.fn() };
@@ -165,5 +166,14 @@ it('should omit cookie options passed as undefined and keep the default values',
     expect.objectContaining({
       secure: true,
     })
+  );
+});
+
+it('should throw an error when called in Route handler or getServerSdieProps', async () => {
+  const mockNextApiRequest = createMockNextApiRequest('');
+  const session = await getSession(mockNextApiRequest);
+
+  await expect(setCookie(session)).rejects.toThrow(
+    /setCookie and deleteCookie methods are not supported for NextRequest or in getServerSideProps/i
   );
 });
