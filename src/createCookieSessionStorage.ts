@@ -1,15 +1,15 @@
 import { stringifySetCookie } from 'cookie';
-import { CookieSession } from './CookieSession';
+import { CookieSession } from './CookieSession.js';
 import {
   type CookieOptions,
   type CookieSessionStorageOptions,
-} from './types/createCookieSessionStorage';
-import { getSessionCookieValue } from './lib/getSessionCookieValue';
-import { setSourceObject } from './lib/setSourceObject';
-import { type CookieSource, SourceType } from './types/cookie-sources';
-import { sign, unsign } from './lib/sign-unsign';
-import { initializeStorage } from './lib/initializeStorage';
-import { filterUnsafeValues } from './lib/filterUnsafeValues';
+} from './types/createCookieSessionStorage.js';
+import { getSessionCookieValue } from './lib/getSessionCookieValue.js';
+import { setSourceObject } from './lib/setSourceObject.js';
+import { type CookieSource, SourceType } from './types/cookie-sources.js';
+import { sign, unsign } from './lib/sign-unsign.js';
+import { initializeStorage } from './lib/initializeStorage.js';
+import { filterUnsafeValues } from './lib/filterUnsafeValues.js';
 
 export function createCookieSessionStorage<T extends Record<string, any>>(
   options: CookieSessionStorageOptions

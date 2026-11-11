@@ -1,4 +1,4 @@
-import { type CookieOptions } from './createCookieSessionStorage';
+import { type CookieOptions } from './createCookieSessionStorage.js';
 
 export type CookieObject = {
   name: string;

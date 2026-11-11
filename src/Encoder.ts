@@ -1,8 +1,8 @@
-import { decodeFromBase64, encodeToBase64 } from './lib/encode-decode';
+import { decodeFromBase64, encodeToBase64 } from './lib/encode-decode.js';
 import {
   type EncoderFunction,
   type EncodingOptions,
-} from './types/createCookieSessionStorage';
+} from './types/createCookieSessionStorage.js';
 
 export class Encoder {
   // By default, the encoder is enabled

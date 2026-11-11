@@ -1,10 +1,10 @@
-import { Encoder } from '../Encoder';
+import { Encoder } from '../Encoder.js';
 import {
   type CookieSessionStorageCookieOptions,
   type CookieSessionStorageOptions,
-} from '../types/createCookieSessionStorage';
-import { filterUnsafeValues } from './filterUnsafeValues';
-import { hasValidSecret } from './hasValidSecret';
+} from '../types/createCookieSessionStorage.js';
+import { filterUnsafeValues } from './filterUnsafeValues.js';
+import { hasValidSecret } from './hasValidSecret.js';
 
 export function initializeStorage(options: CookieSessionStorageOptions) {
   const safeUserCookieOptions = filterUnsafeValues(options.cookie);

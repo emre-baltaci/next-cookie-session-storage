@@ -1,3 +1,3 @@
-import { createCookieSessionStorage } from './createCookieSessionStorage';
+import { createCookieSessionStorage } from './createCookieSessionStorage.js';
 
 export { createCookieSessionStorage };
