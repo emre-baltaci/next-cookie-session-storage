@@ -145,7 +145,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
         throw new Error(
           'setCookie and deleteCookie methods are not supported for NextRequest or in getServerSideProps. Can only be used with Next.js Cookies Api. Your cookie will not be set.'
         );
-      case SourceType.COOKIES_API:
+      case SourceType.COOKIES_API: {
         const cookiesApi = cookieSource.data;
         let cookieValue = session.toString();
 
@@ -171,6 +171,7 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
             In middlewares set your cookies directly in the response object.
             In server components it's not allowed to set cookies. Instead use a middleware or API route.`);
         }
+      }
     }
   };
 
