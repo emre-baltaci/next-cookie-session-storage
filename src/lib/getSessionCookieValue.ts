@@ -4,7 +4,7 @@ import {
   type NextApiRequestInterface,
   type NextRequestInterface,
   SourceType,
-} from '../types/cookie-sources';
+} from '../types/cookie-sources.js';
 
 export function getSessionCookieValue(
   source: CookieSource,

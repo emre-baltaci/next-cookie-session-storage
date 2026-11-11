@@ -4,7 +4,7 @@ import {
   type NextApiRequestInterface,
   type NextRequestInterface,
   SourceType,
-} from '../types/cookie-sources';
+} from '../types/cookie-sources.js';
 
 export function setSourceObject(source: unknown): CookieSource {
   // The order of the checks is important. Don't change it.
