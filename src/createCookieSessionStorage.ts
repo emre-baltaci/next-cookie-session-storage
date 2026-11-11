@@ -140,11 +140,11 @@ export function createCookieSessionStorage<T extends Record<string, any>>(
       : undefined;
 
     switch (cookieSource.type) {
+      case SourceType.NEXT_API_REQUEST:
       case SourceType.NEXT_REQUEST:
-        console.log(
-          'Warning: setCookie and deleteCookie methods are not supported for NextRequest. Can only be used with Next.js Cookies Api. Your cookie will not be set.'
+        throw new Error(
+          'setCookie and deleteCookie methods are not supported for NextRequest or in getServerSideProps. Can only be used with Next.js Cookies Api. Your cookie will not be set.'
         );
-        return;
       case SourceType.COOKIES_API:
         const cookiesApi = cookieSource.data;
         let cookieValue = session.toString();
