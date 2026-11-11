@@ -263,6 +263,8 @@ const storage = createCookieSessionStorage({
 });
 ```
 
+**Important!** Base64 encoding is not an encryption. Without `secrets` anyone can decode the cookie, change the session data and encode it again, and `getSession` will accept it. If the session data must not be changed by the client, use signing. If it must not be read either, use a custom encoder with encryption (see [Encoding](#encoding-usage))
+
 <a id="encoding-usage"></a>
 
 ### Encoding
