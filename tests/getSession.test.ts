@@ -131,3 +131,21 @@ it('should return a new session if a non-object value is received as session dat
   expect(session.getData()).toStrictEqual({});
   expect(spyConsoleWarn).toHaveBeenCalledTimes(1);
 });
+
+it('throws a descriptive error if null or undefined passed as source', async () => {
+  const { getSession } = createCookieSessionStorage({
+    cookie: {
+      name: 'session',
+    },
+    encoding: false,
+    debug: true,
+  });
+
+  await expect(getSession(null)).rejects.toThrow(
+    'Invalid source: null or undefined can not be parameter of getSession'
+  );
+
+  await expect(getSession(undefined)).rejects.toThrow(
+    'Invalid source: null or undefined can not be parameter of getSession'
+  );
+});

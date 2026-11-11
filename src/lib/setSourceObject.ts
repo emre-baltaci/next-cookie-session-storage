@@ -8,6 +8,12 @@ import {
 
 export function setSourceObject(source: unknown): CookieSource {
   // The order of the checks is important. Don't change it.
+  if (source === null || source === undefined) {
+    throw new Error(
+      'Invalid source: null or undefined can not be parameter of getSession'
+    );
+  }
+
   if (
     (source as NextRequestInterface).cookies !== undefined &&
     (source as NextRequestInterface).cookies.get !== undefined
